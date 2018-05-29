@@ -1,13 +1,16 @@
 package com.juanse.coderswag.Controller
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import com.juanse.coderswag.Adapters.ProductsAdapter
+import com.juanse.coderswag.Model.Product
 import com.juanse.coderswag.R
 import com.juanse.coderswag.Services.DataService
 import com.juanse.coderswag.Utilities.EXTRA_CATEGORY
+import com.juanse.coderswag.Utilities.EXTRA_PRODUCT
 import kotlinx.android.synthetic.main.activity_products.*
 
 class ProductsActivity : AppCompatActivity() {
@@ -20,7 +23,9 @@ class ProductsActivity : AppCompatActivity() {
 
         val categoryType = intent.getStringExtra(EXTRA_CATEGORY)
 
-        adapter = ProductsAdapter(this, DataService.getProducts(categoryType))
+        adapter = ProductsAdapter(this, DataService.getProducts(categoryType)) { product ->
+            presentProductDetails(product)
+        }
 
         // Setting more columns for landscape orientation
         var spanCount = 2
@@ -42,4 +47,12 @@ class ProductsActivity : AppCompatActivity() {
         productListView.layoutManager = layoutManager
         productListView.adapter = adapter // Set the adapter for RecycleListView
     }
+
+    private fun presentProductDetails(product: Product) {
+        val productDetailsIntent = Intent(this, ProductDetailsActivity::class.java)
+
+        productDetailsIntent.putExtra(EXTRA_PRODUCT, product)
+        startActivity(productDetailsIntent)
+    }
+
 }
