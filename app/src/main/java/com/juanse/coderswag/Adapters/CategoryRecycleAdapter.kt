@@ -10,14 +10,14 @@ import android.widget.TextView
 import com.juanse.coderswag.Model.Category
 import com.juanse.coderswag.R
 
-class CategoryRecycleAdapter(val context: Context, val categories: List<Category>): RecyclerView.Adapter<CategoryRecycleAdapter.Holder>() {
+class CategoryRecycleAdapter(val context: Context, val categories: List<Category>, val itemClick: (Category) -> Unit): RecyclerView.Adapter<CategoryRecycleAdapter.Holder>() {
 
     // Called when new ViewHolders are needed
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         // Inflate the view for the very first time if there isn't already a recyclerView available to re-use
         val view = LayoutInflater.from(context).inflate(R.layout.category_list_item, parent, false)
 
-        return Holder(view)
+        return Holder(view, itemClick)
     }
 
     override fun getItemCount(): Int {
@@ -31,7 +31,7 @@ class CategoryRecycleAdapter(val context: Context, val categories: List<Category
         holder.bindCategory(categories[position], context)
     }
 
-    inner class Holder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+    inner class Holder(itemView: View?, val itemClick: (Category) -> Unit) : RecyclerView.ViewHolder(itemView) {
         // Get reference to views
         val categoryImage = itemView?.findViewById<ImageView>(R.id.categoryImage)
         val categoryName = itemView?.findViewById<TextView>(R.id.categoryName)
@@ -42,6 +42,9 @@ class CategoryRecycleAdapter(val context: Context, val categories: List<Category
 
             categoryImage?.setImageResource(resourceId)
             categoryName?.text = category.title
+
+            // set on click listener
+            itemView.setOnClickListener { itemClick(category) }
         }
     }
 
