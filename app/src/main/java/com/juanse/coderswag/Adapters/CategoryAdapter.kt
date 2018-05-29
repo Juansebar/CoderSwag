@@ -31,23 +31,34 @@ class CategoryAdapter(context: Context, categories: List<Category>): BaseAdapter
         // create new view
         val categoryView: View
 
-        // LayoutInflater takes xml and converts to usable View to use in code
-        categoryView = LayoutInflater.from(context).inflate(R.layout.category_list_item, null)
+        val holder: ViewHolder
 
-        // Must access the views, store reference
-        val categoryImage: ImageView = categoryView.findViewById(R.id.categoryImage)
-        val categoryName: TextView = categoryView.findViewById(R.id.categoryName)
-        println("Heavy Computing - ") // B/c every time we are creating new items finding the view with ID's
+        if (convertView == null) { // If null then it will be the first time these views will be presented
+            // LayoutInflater takes xml and converts to usable View to use in code
+            categoryView = LayoutInflater.from(context).inflate(R.layout.category_list_item, null) //Inflate the view
+            holder = ViewHolder()
+
+            // Must access the views, store reference
+            holder.categoryImage = categoryView.findViewById(R.id.categoryImage)
+            holder.categoryName = categoryView.findViewById(R.id.categoryName)
+            println("I exist for the first time!")
+            // ** Holder now has reference to the ID's
+
+            categoryView.tag = holder   // Sets a unique value to the categoryView from the holder
+        } else {
+            // Recycle existing views
+            holder = convertView.tag as ViewHolder
+            categoryView = convertView
+            println("Go green recycle!")
+        }
 
         val category = categories[position]
 
         // Access resources Identifier for the image
         val resourceId = context.resources.getIdentifier(category.image, "drawable", context.packageName)
-        // Set the image from the resources
-        categoryImage.setImageResource(resourceId)
-        print(resourceId)
 
-        categoryName.text = category.title
+        holder.categoryImage?.setImageResource(resourceId) // Set the image from the resources
+        holder.categoryName?.text = category.title
 
         return categoryView
     }
@@ -66,6 +77,13 @@ class CategoryAdapter(context: Context, categories: List<Category>): BaseAdapter
     // iOS - numberOfRows in section func
     override fun getCount(): Int {
         return categories.count()
+    }
+
+    // Create a private class to hold a reference to the categoryImage and categoryName
+    // this will be used to reuse views for the ListView
+    private class ViewHolder {
+        var categoryImage: ImageView? = null
+        var categoryName: TextView? = null
     }
 
 }
