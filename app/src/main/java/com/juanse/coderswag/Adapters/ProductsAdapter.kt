@@ -11,7 +11,7 @@ import com.juanse.coderswag.Model.Product
 import com.juanse.coderswag.R
 import kotlinx.android.synthetic.main.product_list_item.view.*
 
-class ProductsAdapter(val context: Context, val products: List<Product>): RecyclerView.Adapter<ProductsAdapter.ProductHolder>() {
+class ProductsAdapter(val context: Context, val products: List<Product>, val itemClick: (Product) -> Unit): RecyclerView.Adapter<ProductsAdapter.ProductHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductHolder {
         // Inflate view for the very first time
@@ -40,6 +40,9 @@ class ProductsAdapter(val context: Context, val products: List<Product>): Recycl
             productImage?.setImageResource(resourceId)
             productName?.text = product.title
             productPrice?.text = "$${product.price}"
+
+            // Set onClickListener with Lambda
+            itemView.setOnClickListener { itemClick(product) }
         }
     }
 }
