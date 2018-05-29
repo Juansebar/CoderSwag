@@ -13,12 +13,9 @@ import com.juanse.coderswag.R
 
 
 // Extends BaseAdapter()
-class CategoryAdapter(context: Context, categories: List<Category>): BaseAdapter() {
+class CategoryAdapter(val context: Context, val categories: List<Category>): BaseAdapter() {
 
-    val context = context
-    val categories = categories
-
-//     ***** Must have these four methods
+    //     ***** Must have these four methods
 
 
     // iOS - cellForRow at IndexPath
