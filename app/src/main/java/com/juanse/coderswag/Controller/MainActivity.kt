@@ -3,6 +3,7 @@ package com.juanse.coderswag.Controller
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.juanse.coderswag.Adapters.CategoryAdapter
 import com.juanse.coderswag.Model.Category
 import com.juanse.coderswag.R
